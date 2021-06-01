@@ -198,7 +198,7 @@ I started by making a decision tree with the default parameters
 
 
 
-Looking at this model, we can see that our training (0.92) and test score (0.76), as well as the accurary (0.76), increased considerably from the baseline determined by using the Dummy Classifier. We are now able to accuratly predict 84% of the functional, 34% of the functional need repair and 73% of the non-functional waterpoints. However, the training score and the test scores are considerably far apart which tells us that this model is overfitting data.
+Looking at this model, we can see that our training (0.92) and test score (0.76), as well as the accurary (0.76), increased considerably from the baseline determined by using the Dummy Classifier. We are now able to accuratly predict 84% of the functional waterpoints. However, this model only accuratly recalls 34% of the functional need repair and 73% of the non-functional waterpoints. Moreover, the training score and the test scores are considerably far apart which tells us that this model is overfitting data.
 
 To get a sense into what features are giving the most importance in the decision tree, I calculated the feature importance of this model. 
 
@@ -229,7 +229,7 @@ In this model I assigned the depth of the tree to a maximum of 100.
 
 
 
-Looking at this model, we can see that the training score, the test score and the accuracy are the same as the standard decision tree shown above, showing that this model is still overfitted. We can still accuratly predict 84% of the functional,and 73% of the non-functional waterpoints. However, this decision tree now can only predict 32% of the functional need repair and 73% of the non-functional waterpoints. So these changes did not improve the model.
+Looking at this model, we can see that the training score, the test score and the accuracy are the same as the standard decision tree shown above, showing that this model is still overfitted. We can still accuratly predict 84% of the functional,and 73% of the non-functional waterpoints. However, this decision tree now can only predict 32% of the functional need repair waterpoints. So these changes did not improve the model.
 
 
 
@@ -246,7 +246,7 @@ Since a depth of 100 did not improve the tree, I decided to decrease the depth t
 
 
 
-This model now is a bit better fitted with a training score = 0.80 and a test score = 0.75. However, the accuracy did not improve, in fact it decreases slightly to 0.75.  While we are now able to accuratly predict more of the functional waterpoints (91%), we can only predict 20% of the functional need repair and 63% of the non-functional waterpoints. So this model is not a great improvement from the default decision tree either.  
+This model now is a bit better fitted with a training score = 0.80 and a test score = 0.75. However, the accuracy did not improve, in fact it decreases slightly to 0.75.  Moreover, while we are now able to accuratly predict more of the functional waterpoints (91%), we can only predict 20% of the functional need repair and 63% of the non-functional waterpoints. So this model does not present itself as an improvement from the default decision tree either.  
 
 
 #### 2.4) Decision Tree with Depth of 10
@@ -258,7 +258,7 @@ Finaly I decided to reduce the depth of the tree to 10 to see if it would give m
 
 
 
-Reducing the depth of the tree did make the model better fitted (training score = 0.72, test score = 0.71) but the accuracy is reduced to 0.71. The model keeps predicting 91% of the functional waterpoints as the model with the depth of 20, but its ability to predict the functional need repair and non-functional is reduced to 8.6% and 55%, respectively. 
+Reducing the depth of the tree did make the model better fitted (training score = 0.72, test score = 0.71) but the accuracy is reduced to 0.71. However, while the model keeps predicting 91% of the functional waterpoints as the model with the depth of 20, its ability to recall functional need repair and non-functional is reduced to 8.6% and 55%, respectively. Therefore, this model should also be improved upon in order to accuratly predict the functional status of the waterpoints. 
 
 
 ### 3) Random Forest Classifier
@@ -295,7 +295,7 @@ The random forest algorithm uses 100 estimators as it's default. To see if I cou
 
 
 
-Using 1000 estimators this model now shows a training score that is a bit lower than the previou model (0.85). However the test score is now 0.8 with accuracy also at 0.8. Meaning that this is a decently fitted and accurate model. The confusion matrice shows that it can accuratly  predict 92% of the functional waterpoints, 23% of the functional need repair and 74% of the non-functional. This model therefore seems to be the best model that I have developed so far. 
+Using 1000 estimators this model now shows a training score that is a bit lower than the previou model (0.85). However the test score is now 0.8 with accuracy also at 0.8. Meaning that this is a decently fitted and accurate model. The confusion matrice shows that it can accuratly  predict 92% of the functional waterpoints, 23% of the functional need repair and 74% of the non-functional. This model therefore seems to be the best model that I have developed so far. However, despite it's high accuracy it still fails to recall a significant amount of waterpoints.  
 
 
 #### 3.3) Random Forest with 1000 estimators + SMOTE
@@ -309,7 +309,7 @@ After trying all the different models shown above, I was puzzled as to why the f
 
 
 
-Using data balanced with SMOTE I ran the same model as above (random forest model with 1000 estimators) to see if my model would get better. The model made from the data balanced with SMOTE can now predict 80% of functional, 58% of functional need repair and 76% of non-functional waterpoints. This is a big improvement on the ability to predict the functional need repair waterpoints. However, it is not as well fitted as the same model working on the native data with a training score of 0.84 and a test score of 0.77 and it is also less accurate (0.77). Importantly, because the absolute number of waterpoints in the functional need repair is so much smaller than in the other two classes this increase in ability to predict functional needs repair waterpoints alone does not make this a better model as it accuratly predicts less waterpoints than the model above done without SMOTE. 
+Using data balanced with SMOTE I ran the same model as above (random forest model with 1000 estimators) to see if my model would get better. The model made from the data balanced with SMOTE can now predict 80% of functional, 57% of functional need repair and 75% of non-functional waterpoints. This is a big improvement on the ability to predict the functional need repair waterpoints. However, it is not as well fitted as the same model working on the native data with a training score of 0.84 and a test score of 0.77 and it is also less accurate (0.77). This is particularly relevant as as in order to build a useful model we need to balance the models accuracy with the recalls. While less accurate this model does recall a higher amount of functional needs repair and non-functional waterpoints. Importantly, because the absolute number of waterpoints in the functional need repair is so much smaller than in the other two classes this increase in ability to predict functional needs repair waterpoints alone does not necessarily make this the better model to use. 
 
 
 
@@ -371,12 +371,14 @@ I have used three different classifiers to try to accuratly predict the status o
 
 * Random Forest Classifier: 0.80
 
+* Random Forest Classifier with SMOTE: 0.77 (but with more even recalls among the different categories)
+
 * K-Nearest Neighbor Classifier: 0.77
 
 
-Looking at all the information provided by these different models, I believe that the best model that I have so far is the Random Forest Classifier (with 1000 estimators). 
+When looking at the Confusion Matrices from each model it is clear that there is a certain degree of bias in the models. While these models can predict with some degree of confidence the functional and non-functional waterpoints, the waterpoints that are functional but in need of repair are harder to predict. This seems to be caused by the fact that there is a great imbalance in the abundance of data from waterpoints that are functional and need repair used to train.
 
-When looking at the Confusion Matrices from each model it is clear that there is a certain degree of bias in the models. While these models can predict with some degree of confidence the functional and non-functional waterpoints, the waterpoints that are functional but in need of repair are harder to predict. This seems to be caused by the fact that there is a great imbalance in the abundance of data from waterpoints that are function and need repair used to train. Although I tried to deal with this disproportion using SMOTE and successfully reduced the bias of the models, it resulted in overall lower scores and the ability of predicting accuratly less number waterpoints. Additional work will need to be done to better deal with the bias introduced by the low abundance of functional need repair waterpoints to create a model that accuratly can predict the functionality of waterpoints in Tanzania. Moreover, performing hyperparameter tunings can also help with making the models more acurate. 
+Looking at all the information provided by these different models, I believe that the best model that I have so far is the Random Forest Classifier (with 1000 estimators) where the data was balanced using SMOTE to reduce the bias of the models. While this model has a slighly lower accuracy than its native Random Forest Classifier, it recalls the waterpoints more evenly between the different categories, thus allowing to better differentiate between functional, non-functional and functional in need of repair waterpoints. Additional work will need to be done to better deal with the bias introduced by the low abundance of functional need repair waterpoints to create a model that accuratly can predict the functionality of waterpoints in Tanzania. Moreover, performing hyperparameter tunings can also help with making the models more acurate. 
 
 Importantly from the analyses of some of these decision tree-based models we can infer the importance of each feature in the model which then gives a sense of what features might be key to the functionality of the waterpoints in Tanzania. Looking at these, it seems that the quantity of water available in each waterpoints, particularly if they are dry, the population around each waterpoint and the how old the waterpoints is are the most significant to predict the functionality of waterpoints in Tanzania. 
 
